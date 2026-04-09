@@ -1,0 +1,54 @@
+# LISTA COMPLETA DE TABLAS DE GESTOMAX (basado en database.ts)
+
+## Tablas Principales (CREATE TABLE IF NOT EXISTS)
+1. Producto - Productos básicos
+2. Punto - Puntos de venta
+3. Configuracion - Configuraciones del sistema
+4. Almacenes - Multi-almacén
+5. Almacen - Almacén general principal
+6. AlmacenPunto - DEPRECADA (migrará a AlmacenZona)
+7. Venta - Ventas
+8. DetalleVenta - Detalles de ventas
+9. VentaDirecta - Ventas directas desde almacén
+10. CierreCaja - Cierres de caja
+11. CierreCajaProducto - Inventario físico en cierres
+12. FormulasPan - Fórmulas de pan
+13. Oferta - Ofertas
+14. OfertaProducto - Productos en ofertas
+15. LogTransferencia - Historial de transferencias
+16. CambioPrecio - Historial de cambios de precios
+17. CierreCajaCambioPrecio - Cambios de precios en cierres
+18. TopePrecio - Límites de precios por producto
+19. AuditoriaPorcentaje - Cambios de porcentaje de salarios
+20. GastosManuales - Gastos manuales por día y mes
+21. IngresosAjustados - Ingresos modificados por usuario
+22. HistorialConsumosPropios - Consumos propios por trabajador y fecha
+
+## Tablas Adicionales (creadas con verificación)
+23. PrestamoDeuda - Préstamos y deudas
+24. PrestamoProductos - Productos en préstamos/deudas
+25. AlmacenProducto - Productos por almacén
+26. AlmacenZona - Productos por zona de punto
+27. Gastos - Gastos del sistema
+
+## Total: 27 tablas
+
+## Tablas CRÍTICAS que deben estar en backup:
+- Producto (inventario)
+- Punto (puntos de venta)
+- Venta (ventas)
+- DetalleVenta (detalles de ventas)
+- Almacen (stock general)
+- AlmacenZona (stock por punto)
+- Gastos (gastos y salarios)
+- HistorialConsumosPropios (consumos propios)
+- CierreCaja (cierres)
+- Oferta (ofertas)
+- PrestamoDeuda (préstamos/deudas)
+- Configuracion (configuración)
+
+## Verificación de inclusión en backup:
+El método obtenerTablas() usa: 
+"SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
+
+Esto debería incluir TODAS las tablas excepto las del sistema (sqlite_%).

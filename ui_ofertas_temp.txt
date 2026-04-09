@@ -1,0 +1,153 @@
+// UI PARA RANGO DE DÍAS Y REPETICIÓN - Insertar después de la sección de validez de días (línea ~923)
+
+{/* Sección de Rango de Días y Repetición */}
+<Text style={styles.inputLabel}>Programación de Oferta</Text>
+<View style={styles.checkboxContainer}>
+  <TouchableOpacity
+    style={styles.checkbox}
+    onPress={() =>
+      setOfertaMejoradaData({
+        ...ofertaMejoradaData,
+        usar_rango_dias: !ofertaMejoradaData.usar_rango_dias,
+      })
+    }
+  >
+    <Ionicons
+      name={
+        ofertaMejoradaData.usar_rango_dias
+          ? "checkmark-circle"
+          : "ellipse-outline"
+      }
+      size={20}
+      color={
+        ofertaMejoradaData.usar_rango_dias
+          ? "#06b6d4"
+          : "#6b7280"
+      }
+    />
+    <Text style={styles.checkboxLabel}>Configurar rango de días</Text>
+  </TouchableOpacity>
+</View>
+
+{ofertaMejoradaData.usar_rango_dias && (
+  <View style={{ marginTop: 16 }}>
+    <Text style={styles.inputLabel}>Día de Inicio *</Text>
+    <View style={styles.diasContainer}>
+      {diasSemana.map((dia) => (
+        <TouchableOpacity
+          key={dia.value}
+          style={[
+            styles.diaButton,
+            ofertaMejoradaData.dia_inicio === dia.value && styles.diaButtonSelected,
+          ]}
+          onPress={() =>
+            setOfertaMejoradaData({
+              ...ofertaMejoradaData,
+              dia_inicio: dia.value,
+            })
+          }
+        >
+          <Text
+            style={[
+              styles.diaButtonText,
+              ofertaMejoradaData.dia_inicio === dia.value && styles.diaButtonTextSelected,
+            ]}
+          >
+            {dia.label}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+
+    <Text style={styles.inputLabel}>Día de Fin *</Text>
+    <View style={styles.diasContainer}>
+      {diasSemana.map((dia) => (
+        <TouchableOpacity
+          key={dia.value}
+          style={[
+            styles.diaButton,
+            ofertaMejoradaData.dia_fin === dia.value && styles.diaButtonSelected,
+          ]}
+          onPress={() =>
+            setOfertaMejoradaData({
+              ...ofertaMejoradaData,
+              dia_fin: dia.value,
+            })
+          }
+        >
+          <Text
+            style={[
+              styles.diaButtonText,
+              ofertaMejoradaData.dia_fin === dia.value && styles.diaButtonTextSelected,
+            ]}
+          >
+            {dia.label}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+
+    <View style={styles.checkboxContainer}>
+      <TouchableOpacity
+        style={styles.checkbox}
+        onPress={() =>
+          setOfertaMejoradaData({
+            ...ofertaMejoradaData,
+            repetir: !ofertaMejoradaData.repetir,
+          })
+        }
+      >
+        <Ionicons
+          name={
+            ofertaMejoradaData.repetir
+              ? "checkmark-circle"
+              : "ellipse-outline"
+          }
+          size={20}
+          color={
+            ofertaMejoradaData.repetir
+              ? "#06b6d4"
+              : "#6b7280"
+          }
+        />
+        <Text style={styles.checkboxLabel}>Repetir semanalmente</Text>
+      </TouchableOpacity>
+    </View>
+
+    <Text style={styles.inputHint}>
+      {ofertaMejoradaData.dia_inicio && ofertaMejoradaData.dia_fin
+        ? `La oferta estará activa de ${diasSemana.find(d => d.value === ofertaMejoradaData.dia_inicio)?.label} a ${diasSemana.find(d => d.value === ofertaMejoradaData.dia_fin)?.label}${ofertaMejoradaData.repetir ? ' y se repetirá cada semana' : ''}`
+        : 'Seleccione los días para activar la oferta'}
+    </Text>
+  </View>
+)}
+
+// ESTILOS PARA AGREGAR AL FINAL DEL ARCHIVO (antes del cierre de StyleSheet.create)
+  diasContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 16,
+  },
+  diaButton: {
+    backgroundColor: '#f3f4f6',
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    minWidth: 60,
+    alignItems: 'center',
+  },
+  diaButtonSelected: {
+    backgroundColor: '#3b82f6',
+    borderColor: '#3b82f6',
+  },
+  diaButtonText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#6b7280',
+  },
+  diaButtonTextSelected: {
+    color: 'white',
+  },

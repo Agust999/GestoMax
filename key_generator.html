@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generador de Claves GestoMax</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: linear-gradient(135deg, #151718 0%, #1a1d1e 100%);
+        color: #ecedee;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #1a1d1e;
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        border: 1px solid #2d3748;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .logo {
+        width: 80px;
+        height: 80px;
+        background: #0a7ea4;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 32px;
+        font-weight: bold;
+        color: #ecedee;
+      }
+
+      h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+        background: linear-gradient(135deg, #0a7ea4, #10b981);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .subtitle {
+        color: #687076;
+        font-size: 16px;
+      }
+
+      .form-section {
+        background: #151718;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        border: 1px solid #2d3748;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #ecedee;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      input {
+        width: 100%;
+        padding: 15px;
+        background: #0a7ea4;
+        border: 2px solid #0a7ea4;
+        border-radius: 8px;
+        color: #ecedee;
+        font-size: 16px;
+        font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
+        transition: all 0.3s ease;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #10b981;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+      }
+
+      input::placeholder {
+        color: rgba(236, 237, 238, 0.5);
+      }
+
+      .generate-btn {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #10b981, #0a7ea4);
+        border: none;
+        border-radius: 12px;
+        color: #ecedee;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+      }
+
+      .generate-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+      }
+
+      .generate-btn:active {
+        transform: translateY(0);
+      }
+
+      .result-section {
+        display: none;
+        background: linear-gradient(135deg, #10b981, #0a7ea4);
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        border: 1px solid #10b981;
+      }
+
+      .result-section.show {
+        display: block;
+        animation: slideIn 0.5s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .result-title {
+        font-size: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      .result-item {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        backdrop-filter: blur(10px);
+      }
+
+      .result-label {
+        font-size: 12px;
+        color: rgba(236, 237, 238, 0.8);
+        margin-bottom: 5px;
+      }
+
+      .result-value {
+        font-size: 18px;
+        font-weight: bold;
+        font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
+        word-break: break-all;
+      }
+
+      .instructions {
+        background: #151718;
+        border-radius: 12px;
+        padding: 30px;
+        border: 1px solid #2d3748;
+      }
+
+      .instructions h3 {
+        color: #0a7ea4;
+        margin-bottom: 20px;
+        font-size: 18px;
+      }
+
+      .instructions ol {
+        list-style: none;
+        counter-reset: step-counter;
+      }
+
+      .instructions li {
+        counter-increment: step-counter;
+        margin-bottom: 15px;
+        padding-left: 40px;
+        position: relative;
+        color: #687076;
+        line-height: 1.6;
+      }
+
+      .instructions li::before {
+        content: counter(step-counter);
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: #0a7ea4;
+        color: #ecedee;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      .warning {
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid #f59e0b;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 20px;
+        color: #f59e0b;
+        text-align: center;
+        font-size: 14px;
+      }
+
+      .copy-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        color: #ecedee;
+        cursor: pointer;
+        font-size: 12px;
+        margin-top: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .copy-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .copy-btn.copied {
+        background: #10b981;
+      }
+
+      .examples {
+        background: #151718;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 30px;
+        border: 1px solid #2d3748;
+      }
+
+      .examples h3 {
+        color: #0a7ea4;
+        margin-bottom: 15px;
+        font-size: 16px;
+      }
+
+      .example-item {
+        background: #0a7ea4;
+        border-radius: 6px;
+        padding: 10px;
+        margin-bottom: 8px;
+        font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
+        font-size: 12px;
+        color: #ecedee;
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          padding: 20px;
+        }
+
+        h1 {
+          font-size: 24px;
+        }
+
+        .form-section,
+        .result-section,
+        .instructions {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">GM</div>
+        <h1>GestoMax</h1>
+        <p class="subtitle">Generador de Claves de Licencia</p>
+      </div>
+
+      <div class="examples">
+        <h3>📱 Ejemplos de User Code</h3>
+        <div class="example-item">AB-XXX-XXX</div>
+        <div class="example-item">CD-YYY-YYY</div>
+        <div class="example-item">EF-ZZZ-ZZZ</div>
+        <p style="color: #687076; font-size: 12px; margin-top: 10px">
+          Formato: 8 caracteres (XX-XXX-XXX) donde los primeros 2 determinan el
+          desplazamiento Cesar
+        </p>
+      </div>
+
+      <div class="form-section">
+        <div class="form-group">
+          <label for="userCode">📱 User Code del Usuario</label>
+          <input
+            type="text"
+            id="userCode"
+            placeholder="AB-XXX-XXX"
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </div>
+        <button class="generate-btn" onclick="generateKey()">
+          🔑 Generar Clave de Licencia
+        </button>
+      </div>
+
+      <div id="resultSection" class="result-section">
+        <div class="result-title">🎉 Clave Generada con Éxito</div>
+
+        <div class="result-item">
+          <div class="result-label">User Code</div>
+          <div class="result-value" id="resultUserCode"></div>
+          <button class="copy-btn" onclick="copyToClipboard('resultUserCode')">
+            📋 Copiar
+          </button>
+        </div>
+
+        <div class="result-item">
+          <div class="result-label">Clave de Activación</div>
+          <div class="result-value" id="resultLicenseKey"></div>
+          <button
+            class="copy-btn"
+            onclick="copyToClipboard('resultLicenseKey')"
+          >
+            📋 Copiar
+          </button>
+        </div>
+
+        <div class="result-item">
+          <div class="result-label">Desplazamiento Cesar</div>
+          <div class="result-value" id="resultShift"></div>
+        </div>
+
+        <div class="result-item">
+          <div class="result-label">Fecha de Generación</div>
+          <div class="result-value" id="resultDate"></div>
+        </div>
+      </div>
+
+      <div class="instructions">
+        <h3>📋 Instrucciones para el Usuario</h3>
+        <ol>
+          <li>Abre GestoMax en el dispositivo bloqueado</li>
+          <li>
+            Copia y pega la Clave de Activación en el campo "Clave de Licencia"
+          </li>
+          <li>Presiona el botón "Activar Licencia"</li>
+          <li>¡Listo! La app quedará activada permanentemente</li>
+        </ol>
+
+        <div
+          style="
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #10b981;
+            text-align: center;
+            font-size: 14px;
+          "
+        >
+          🔐 Sistema de Cifrado Cesar: Los primeros 2 caracteres del User Code
+          determinan el desplazamiento para generar la clave única
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Alfabeto para cifrado Cesar
+      const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+      // Aplicar cifrado Cesar
+      function applyCaesarCipher(text, shift) {
+        return text
+          .split("")
+          .map((char) => {
+            const index = ALPHABET.indexOf(char);
+            if (index === -1) return char;
+            const newIndex = (index + shift) % 26;
+            return ALPHABET[newIndex];
+          })
+          .join("");
+      }
+
+      // Calcular desplazamiento desde los primeros 2 caracteres
+      function calculateShift(firstTwo) {
+        let shift = 0;
+        for (let i = 0; i < firstTwo.length; i++) {
+          const char = firstTwo[i].toUpperCase();
+          const index = ALPHABET.indexOf(char);
+          if (index !== -1) {
+            shift += index + 1; // +1 porque A=1, B=2, etc.
+          }
+        }
+        return shift;
+      }
+
+      function generateKey() {
+        const userCode = document.getElementById("userCode").value.trim();
+
+        if (!userCode) {
+          alert("❌ Por favor ingresa el User Code");
+          return;
+        }
+
+        // Validar formato XX-XXX-XXX
+        const parts = userCode.split("-");
+        if (
+          parts.length !== 3 ||
+          parts[0].length !== 2 ||
+          parts[1].length !== 3 ||
+          parts[2].length !== 3
+        ) {
+          alert("❌ Formato de User Code inválido. Ejemplo: AB-XXX-XXX");
+          return;
+        }
+
+        // Validar que solo contenga letras
+        const cleanCode = userCode.replace(/-/g, "").toUpperCase();
+        if (!/^[A-Z]{8}$/.test(cleanCode)) {
+          alert("❌ El User Code debe contener solo letras (A-Z)");
+          return;
+        }
+
+        // Extraer las letras del user code
+        const firstTwo = cleanCode.substring(0, 2);
+        const remaining = cleanCode.substring(2);
+
+        // Calcular desplazamiento
+        const shift = calculateShift(firstTwo);
+
+        // Aplicar cifrado Cesar al resto
+        const encrypted = applyCaesarCipher(remaining, shift);
+
+        // Formatear clave: XX-XXX-XXX
+        const licenseKey = `${firstTwo}-${encrypted.substring(0, 3)}-${encrypted.substring(3)}`;
+
+        // Mostrar resultados
+        document.getElementById("resultUserCode").textContent = userCode;
+        document.getElementById("resultLicenseKey").textContent = licenseKey;
+        document.getElementById("resultShift").textContent =
+          `${shift} (A=${firstTwo[0]}=${ALPHABET.indexOf(firstTwo[0]) + 1}, B=${firstTwo[1]}=${ALPHABET.indexOf(firstTwo[1]) + 1})`;
+        document.getElementById("resultDate").textContent =
+          new Date().toLocaleString("es-ES");
+
+        // Mostrar sección de resultados
+        document.getElementById("resultSection").classList.add("show");
+
+        // Scroll a resultados
+        document
+          .getElementById("resultSection")
+          .scrollIntoView({ behavior: "smooth" });
+      }
+
+      function copyToClipboard(elementId) {
+        const text = document.getElementById(elementId).textContent;
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = "✅ Copiado";
+            button.classList.add("copied");
+
+            setTimeout(() => {
+              button.textContent = originalText;
+              button.classList.remove("copied");
+            }, 2000);
+          })
+          .catch((err) => {
+            // Fallback para navegadores antiguos
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = "✅ Copiado";
+            button.classList.add("copied");
+
+            setTimeout(() => {
+              button.textContent = originalText;
+              button.classList.remove("copied");
+            }, 2000);
+          });
+      }
+
+      // Permitir generar con Enter
+      document
+        .getElementById("userCode")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            generateKey();
+          }
+        });
+
+      // Auto-focus en el input
+      window.onload = function () {
+        document.getElementById("userCode").focus();
+      };
+    </script>
+  </body>
+</html>

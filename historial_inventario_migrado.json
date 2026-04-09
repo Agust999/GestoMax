@@ -1,0 +1,54 @@
+[
+  {
+    "producto_id": 1,
+    "almacen_id": null,
+    "punto_id": 1,
+    "zona_id": 1,
+    "tipo_movimiento": "transferencia",
+    "cantidad_variacion": -10,
+    "stock_anterior": 20,
+    "stock_nuevo": 10,
+    "entidad_origen_destino": "Punto Test",
+    "notas": "Migrado desde LogTransferencia: Transferencia de prueba",
+    "creado_en": "2026-03-31 12:00:00"
+  },
+  {
+    "producto_id": 2,
+    "almacen_id": 1,
+    "punto_id": null,
+    "zona_id": null,
+    "tipo_movimiento": "transferencia",
+    "cantidad_variacion": -5,
+    "stock_anterior": 15,
+    "stock_nuevo": 10,
+    "entidad_origen_destino": "Almacén Principal",
+    "notas": "Migrado desde LogTransferencia: Transferencia interna",
+    "creado_en": "2026-03-31 11:00:00"
+  },
+  {
+    "producto_id": 1,
+    "almacen_id": null,
+    "punto_id": null,
+    "zona_id": null,
+    "tipo_movimiento": "ajuste",
+    "cantidad_variacion": 20,
+    "stock_anterior": 0,
+    "stock_nuevo": 20,
+    "entidad_origen_destino": "Creación inicial",
+    "notas": "Migrado desde Almacen: 20 unidades iniciales",
+    "creado_en": "2026-03-30 10:00:00"
+  },
+  {
+    "producto_id": 3,
+    "almacen_id": null,
+    "punto_id": null,
+    "zona_id": null,
+    "tipo_movimiento": "ajuste",
+    "cantidad_variacion": 15,
+    "stock_anterior": 0,
+    "stock_nuevo": 15,
+    "entidad_origen_destino": "Creación inicial",
+    "notas": "Migrado desde Almacen: 15 unidades iniciales",
+    "creado_en": "2026-03-29 09:00:00"
+  }
+]
